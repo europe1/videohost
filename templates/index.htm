@@ -1,0 +1,8 @@
+<p><a href="/upload">Upload new video</a></p>
+{{ range . }}
+<p><video src="/tmp/{{ .Source }}" controls></p>
+<p>
+  <a href="/{{ (.Owner).Link }}/{{ .Link }}">{{ .Title }}</a>
+  <i>by <a href="/{{ (.Owner).Link }}">{{ (.Owner).Username }}</a></i>
+</p><br>
+{{ end }}
