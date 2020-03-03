@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"log"
 	"path/filepath"
-	"github.com/jackc/pgx"
+  "github.com/jackc/pgx"
 )
 
 type Video struct {
@@ -26,9 +26,9 @@ type User struct {
 }
 
 func (v Video) save() {
-	conn, err := pgx.Connect(context.Background(), "postgres://postgres:password@localhost/mydb")
+	conn, err := pgx.Connect(context.Background(), "postgres://admin:password@localhost/mydb")
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Unable to connect to the database: %v\n", err)
 		os.Exit(1)
 	}
 	defer conn.Close(context.Background())
@@ -44,9 +44,9 @@ func (v Video) save() {
 }
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
-	conn, err := pgx.Connect(context.Background(), "postgres://postgres:password@localhost/mydb")
+	conn, err := pgx.Connect(context.Background(), "postgres://admin:password@localhost/mydb")
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Unable to connection to database: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Unable to connect to the database: %v\n", err)
 		os.Exit(1)
 	}
 	defer conn.Close(context.Background())
@@ -126,5 +126,5 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 		http.Handle("/tmp/", http.StripPrefix("/tmp/", http.FileServer(http.Dir("./tmp"))))
 		http.HandleFunc("/upload", uploadHandler)
 		http.HandleFunc("/", homeHandler)
-		log.Fatal(http.ListenAndServe(":80", nil))
+		log.Fatal(http.ListenAndServe(":8080", nil))
 	}
